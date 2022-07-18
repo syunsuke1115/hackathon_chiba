@@ -30,7 +30,7 @@ func main() {
 	db = driver.ConnectDB()
 	router := mux.NewRouter()
 
-	router.HandleFunc("/posts", getPosts).Methods("GET")
+	router.HandleFunc("/posts/channel/{channel_id}", getPosts).Methods("GET")
 	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
 	router.HandleFunc("/posts", addPost).Methods("POST")
 	router.HandleFunc("/posts", updatePost).Methods("PUT")
@@ -42,9 +42,10 @@ func main() {
 
 func getPosts(w http.ResponseWriter,r *http.Request){
 	var post models.Posts
+	params :=mux.Vars(r)
 	posts = []models.Posts{}
 
-	rows, err := db.Query("select * from posts")
+	rows, err := db.Query("select * from posts where channel_id=$1 and to_reply =0",params["channel_id"])
 	logFatal(err)
 
 	defer rows.Close()
