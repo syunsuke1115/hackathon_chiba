@@ -34,7 +34,8 @@ func main() {
 	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
 	router.HandleFunc("/posts", addPost).Methods("POST")
 	router.HandleFunc("/posts", updatePost).Methods("PUT")
-	router.HandleFunc("/posts/{id}", removePost).Methods("DELETE")
+	router.HandleFunc("/posts/{id}", deletePost).Methods("DELETE")
+	router.HandleFunc("/posts/reply/{id}", getReply).Methods("GET")
 	fmt.Println("server run")
 	log.Fatal(http.ListenAndServe(":8000",router))
 }
@@ -102,7 +103,7 @@ func updatePost(w http.ResponseWriter,r *http.Request){
 	json.NewEncoder(w).Encode(rowsUpdated)
 }
 
-func removePost(w http.ResponseWriter,r *http.Request){
+func deletePost(w http.ResponseWriter,r *http.Request){
 	params :=mux.Vars(r)
 	result,err := db.Exec("delete from posts where id = $1",params["id"])
 	logFatal(err)
@@ -110,4 +111,24 @@ func removePost(w http.ResponseWriter,r *http.Request){
 	rowsDeleted,err:= result.RowsAffected()
 	logFatal(err)
 	json.NewEncoder(w).Encode(rowsDeleted)
+}
+
+func getReply(w http.ResponseWriter,r *http.Request){
+	var post models.Posts
+
+	params :=mux.Vars(r)
+	posts = []models.Posts{}
+
+	rows, err := db.Query("select * from posts where to_reply=$1",params["id"])
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next(){
+		err := rows.Scan(&post.ID,&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply,&post.Created_at,&post.Updated_at)
+		logFatal(err)
+
+		posts =append(posts, post)
+	}
+	json.NewEncoder(w).Encode(posts)
 }
