@@ -1,9 +1,5 @@
 package models
 
-// import (
-//     "github.com/path/to/timestamp"
-// )
-
 type Posts struct{
 	ID int `json:"id"`
 	Channel_id string `json:"channel_id"`
