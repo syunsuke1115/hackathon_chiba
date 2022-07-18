@@ -14,6 +14,8 @@ import (
 )
 
 var posts []models.Posts
+var users []models.Users
+var channels []models.Channels
 var db *sql.DB
 
 func init(){
@@ -30,12 +32,23 @@ func main() {
 	db = driver.ConnectDB()
 	router := mux.NewRouter()
 
+	// posts
 	router.HandleFunc("/posts/channel/{channel_id}", getPosts).Methods("GET")
 	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
 	router.HandleFunc("/posts", addPost).Methods("POST")
 	router.HandleFunc("/posts", updatePost).Methods("PUT")
 	router.HandleFunc("/posts/{id}", deletePost).Methods("DELETE")
 	router.HandleFunc("/posts/reply/{id}", getReply).Methods("GET")
+
+	// users
+	router.HandleFunc("/users", getUsers).Methods("GET")
+	router.HandleFunc("/users", addUser).Methods("POST")
+
+	// channels
+	router.HandleFunc("/channels/space/{space_id}", getChannels).Methods("GET")
+	router.HandleFunc("/channels", addChannel).Methods("POST")
+	router.HandleFunc("/channelUsers", addChannelUsers).Methods("POST")
+
 	fmt.Println("server run")
 	log.Fatal(http.ListenAndServe(":8000",router))
 }
@@ -132,4 +145,81 @@ func getReply(w http.ResponseWriter,r *http.Request){
 		posts =append(posts, post)
 	}
 	json.NewEncoder(w).Encode(posts)
+}
+
+func getUsers(w http.ResponseWriter,r *http.Request){
+	var user models.Users
+	users = []models.Users{}
+
+	rows, err := db.Query("select * from users")
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next(){
+		err := rows.Scan(&user.ID,&user.Name,&user.Email,&user.Pass,&user.Avator_image,&user.Created_at,&user.Updated_at)
+		logFatal(err)
+
+		users =append(users, user)
+	}
+	json.NewEncoder(w).Encode(users)
+}
+
+func addUser(w http.ResponseWriter,r *http.Request){
+	var user models.Users
+	var userID int
+	users = []models.Users{}
+
+	json.NewDecoder(r.Body).Decode(&user)
+
+	err :=db.QueryRow("insert into users (name,email,pass,avator_image,created_at,updated_at) values($1,$2,$3,$4,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
+	&user.Name,&user.Email,&user.Pass,&user.Avator_image).Scan(&userID)
+	logFatal(err)
+	json.NewEncoder(w).Encode(userID)
+}
+
+func getChannels(w http.ResponseWriter,r *http.Request){
+	var channel models.Channels
+	channels = []models.Channels{}
+	params :=mux.Vars(r)
+
+	rows, err := db.Query("select * from channels where space_id=$1",params["space_id"])
+
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next(){
+		err := rows.Scan(&channel.ID,&channel.Name,&channel.Space_id,&channel.Created_at,&channel.Updated_at)
+		logFatal(err)
+
+		channels =append(channels, channel)
+	}
+	json.NewEncoder(w).Encode(channels)
+}
+
+func addChannel(w http.ResponseWriter,r *http.Request){
+	var channel models.Channels
+	var channelID int
+	
+	json.NewDecoder(r.Body).Decode(&channel)
+	// idは自動で追加
+	err :=db.QueryRow("insert into channels (name,space_id,created_at,updated_at) values($1,$2,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
+	&channel.Name,&channel.Space_id).Scan(&channelID)
+	logFatal(err)
+
+	json.NewEncoder(w).Encode(channelID)
+}
+
+func addChannelUsers(w http.ResponseWriter,r *http.Request){
+	var channelUsers models.ChannelUsers
+	var channelUsersID int
+	
+	json.NewDecoder(r.Body).Decode(&channelUsers)
+	// idは自動で追加
+	err :=db.QueryRow("insert into channel_users (user_id,channel_id,created_at,updated_at) values($1,$2,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
+	&channelUsers.User_id,&channelUsers.Channel_id).Scan(&channelUsersID)
+	logFatal(err)
+
+	json.NewEncoder(w).Encode(channelUsersID)
 }

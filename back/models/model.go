@@ -18,7 +18,6 @@ type Posts struct{
 type Users struct{
 	ID int `json:"id"`
 	Name string `json:"name"`
-	User_id string `json:"user_id"`
 	Email string `json:"email"`
 	Pass string `json:"pass"`
 	Avator_image string `json:"avator_image"`
@@ -29,7 +28,16 @@ type Users struct{
 type Channels struct{
 	ID int `json:"id"`
 	Name string `json:"name"`
-	Space_id string `json:"space_id"`
+	Space_id int `json:"space_id"`
+	Created_at string `json:"created_at"`
+	Updated_at string `json:"updated_at"`
+}
+
+
+type ChannelUsers struct{
+	ID int `json:"id"`
+	User_id int `json:"user_id"`
+	Channel_id int `json:"channel_id"`
 	Created_at string `json:"created_at"`
 	Updated_at string `json:"updated_at"`
 }
