@@ -3,6 +3,7 @@ import "./RightSidebar.css";
 import FlipMove from "react-flip-move";
 import MessageBox from "../Widget/MessageBox";
 import "./RightSidebar.css";
+import Reply from "./Reply";
 
 function RightSidebar({ channel }) {
   const [post, setPost] = useState({
@@ -50,6 +51,7 @@ function RightSidebar({ channel }) {
           />
         ))}
       </FlipMove>
+      <Reply/>
     </div>
   );
 }

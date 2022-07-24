@@ -1,0 +1,46 @@
+.reply{
+    padding-bottom: 10px;
+    border-top: 1px solid var(--slack-background);
+    border-bottom: 1px solid var(--slack-background);
+    padding-right: 10px;
+}
+
+.reply > form{
+    display: flex;
+    flex-direction: column;
+}
+
+.reply--input{
+    display: flex;
+}
+
+.reply--input > input{
+    flex: 0.95;
+    font-size: 20px;
+    margin-left: 20px;
+    padding: 5px;
+    border: none;
+}
+
+.reply--imageButton{
+    display: flex;
+    flex-direction: row;
+}
+
+.reply--imageInput{
+    flex: 0.95;
+    border: none;
+    padding: 5px;
+    margin-left: 20px;
+}
+
+.reply--postButton{
+    background-color: var(--slack-string-light) !important;
+    color: white !important;
+    font-weight: 900 !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 5px!important;
+    margin-top: 20px !important;
+    margin-left: auto !important;
+}
