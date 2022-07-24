@@ -33,4 +33,5 @@
 
 .home--message{
     text-align:center;
+    color: var(--slack-string);
 }
