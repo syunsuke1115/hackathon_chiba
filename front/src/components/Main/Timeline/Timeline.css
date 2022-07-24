@@ -1,0 +1,6 @@
+.timeline {
+    color: var(--slack-background);
+    flex:0.45;
+    border-right: 1px solid var(--slack-background);
+    overflow-y: scroll;
+}
