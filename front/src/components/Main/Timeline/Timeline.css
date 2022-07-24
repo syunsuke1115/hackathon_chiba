@@ -2,4 +2,26 @@
     color: var(--slack-background);
     flex:0.50;
     border-right: 1px solid var(--slack-background);
+    overflow-y: scroll;
+}
+
+.timeline::-webkit-scrollbar{
+    display: none;
+}
+
+.timeline--header{
+    top: 0;
+    position: sticky;
+    z-index: 100;
+    background-color: white;
+}
+
+.timeline--header >h2{
+    background-color: var(--slack-color);
+    color: var(--slack-background);
+    font-size: 25px ;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 0.5px solid var(--slack-border);
 }

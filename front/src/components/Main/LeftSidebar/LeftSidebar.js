@@ -8,9 +8,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AppsIcon from "@mui/icons-material/Apps";
 import Channel from "./Channel";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { Fab } from "@mui/material";
 
-function LeftSidebar() {
+function LeftSidebar({channel}) {
   return (
     <div className="left-sidebar">
       {/* ワークスペース名 */}
