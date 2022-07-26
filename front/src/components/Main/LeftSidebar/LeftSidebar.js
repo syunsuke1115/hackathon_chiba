@@ -9,12 +9,12 @@ import AppsIcon from "@mui/icons-material/Apps";
 import Channel from "./Channel";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
-function LeftSidebar({channel}) {
+function LeftSidebar({channel,loginUser}) {
   return (
     <div className="left-sidebar">
       {/* ワークスペース名 */}
       <div className="left-sidebar--header">
-        <h2>UTTC</h2>
+        <h2>UTTC-{loginUser.username}</h2>
       </div>
       {/* 設定ボタン */}
       <div className="left-sidebar--setting">

@@ -4,7 +4,7 @@ import "./Timeline.css";
 import FlipMove from "react-flip-move";
 import MessageBox from "../Widget/MessageBox";
 
-function Timeline({channel}) {
+function Timeline({ channel, loginUser }) {
   const [posts, setPosts] = useState([
     {
       text: "初めてのメッセージ",
@@ -26,6 +26,7 @@ function Timeline({channel}) {
       {/* チャンネル名 */}
       <div className="timeline--header">
         <h2>{channel}</h2>
+        <h4>{loginUser.username}</h4>
         <Post />
       </div>
       <FlipMove>

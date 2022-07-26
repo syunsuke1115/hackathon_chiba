@@ -5,7 +5,7 @@ import MessageBox from "../Widget/MessageBox";
 import "./RightSidebar.css";
 import Reply from "./Reply";
 
-function RightSidebar({ channel }) {
+function RightSidebar({ channel, loginUser}) {
   const [post, setPost] = useState({
     text: "投稿",
     username: "千葉駿介",

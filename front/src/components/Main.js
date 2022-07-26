@@ -4,14 +4,14 @@ import RightSidebar from "./Main/RightSidebar/RightSidebar";
 import Timeline from "./Main/Timeline/Timeline";
 import "./Main.css"
 
-function Main() {
+function Main({loginUser}) {
   const [channel, setChannel] = useState(["general"]);
 
   return (
     <div className="main">
-      <LeftSidebar channel={channel}/>
-      <Timeline channel={channel}/>
-      <RightSidebar channel={channel}/>
+      <LeftSidebar channel={channel} loginUser={loginUser}/>
+      <Timeline channel={channel} loginUser={loginUser}/>
+      <RightSidebar channel={channel} loginUser={loginUser}/>
     </div>
   );
 }

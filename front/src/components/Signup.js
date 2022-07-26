@@ -5,32 +5,17 @@ import { Button, Box, Typography } from "@mui/material";
 import "./Siginup.css";
 import { Container } from "react-bootstrap";
 
-function Signup() {
+function Signup({setLoginUser}) {
   const emailRef = useRef();
-  const nameRef = useRef();
+  const nameRef = useRef("千葉");
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    // if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-    //   return setError("Passwords do not match")
-    // }
-
-    // try {
-    //   setError("")
-    //   setLoading(true)
-    //   await signup(emailRef.current.value, passwordRef.current.value)
-    //   history.push("/")
-    // } catch {
-    //   setError("Failed to create an account")
-    // }
-
-    // setLoading(false)
-  }
+  const signUp = (e) => {
+    setLoginUser(nameRef.current.value);
+  };
 
   return (
     <Container
@@ -44,7 +29,7 @@ function Signup() {
               <h1>Slackへようこそ</h1>
             </div>
             {error && <Alert variant="danger">{error}</Alert>}
-            <Form onSubmit={handleSubmit}>
+            <Form>
               <Form.Group id="name" className="signup--input-box">
                 <Form.Label>名前</Form.Label>
                 <Form.Control type="name" ref={nameRef} required />
@@ -72,6 +57,7 @@ function Signup() {
                 fullWidth
                 component={Link}
                 to="/main"
+                onClick={(e) => signUp(e)}
               >
                 {" "}
                 新規登録

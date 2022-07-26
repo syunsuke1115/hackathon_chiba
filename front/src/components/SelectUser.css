@@ -1,0 +1,9 @@
+.selectUser--header{
+    text-align:center;
+    color: var(--slack-string);
+    padding: 10px;
+}
+
+.selectUser--title{
+    font-size: 20px;
+}
