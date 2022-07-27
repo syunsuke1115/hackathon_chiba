@@ -5,13 +5,13 @@ import "./User.css";
 
 function User({ user, setLoginUser}) {
   const login = (e) => {
-    setLoginUser({id:user.id,username:user.username});
+    setLoginUser({id:user.id,username:user.name});
   };
   
   return (
     <tr>
       <td className="user--text">{user.id}</td>
-      <td className="user--text">{user.username}</td>
+      <td className="user--text">{user.name}</td>
       <td>
         <Button
           type="button"

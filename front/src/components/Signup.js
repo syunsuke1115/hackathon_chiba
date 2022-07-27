@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Button, Box, Typography } from "@mui/material";
+import { Button} from "@mui/material";
 import "./Siginup.css";
 import { Container } from "react-bootstrap";
 
@@ -14,7 +14,7 @@ function Signup({setLoginUser}) {
   const [loading, setLoading] = useState(false);
 
   const signUp = (e) => {
-    setLoginUser(nameRef.current.value);
+    
   };
 
   return (
@@ -56,7 +56,7 @@ function Signup({setLoginUser}) {
                 className="signup--button"
                 fullWidth
                 component={Link}
-                to="/main"
+                to="/login"
                 onClick={(e) => signUp(e)}
               >
                 {" "}
