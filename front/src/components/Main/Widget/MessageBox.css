@@ -16,7 +16,7 @@ p {
 
 .message--body > img {
   border-radius: 5px;
-  width: 100%;
+  width: 50%;
 }
 
 .message--headerText > h3 {
