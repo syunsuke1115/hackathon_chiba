@@ -1,45 +1,50 @@
 .message {
-    display: flex;
-    align-items: flex-start;
-    color: var(--slack-string);
-    padding:10px 5px;
+  display: flex;
+  align-items: flex-start;
+  color: var(--slack-string);
+  padding: 10px 5px;
 }
 
 .message--body {
-    flex: 1;
+  flex: 1;
 }
 
-p{
-    padding: 0;
-    margin: 0;
+p {
+  padding: 0;
+  margin: 0;
 }
 
-.message--body > img{
-    border-radius: 5px;
-    width: 100%;
+.message--body > img {
+  border-radius: 5px;
+  width: 100%;
 }
 
 .message--headerText > h3 {
-    font-size: 20px;
-    margin-bottom: 5px;
-    font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 5px;
+  font-weight: 800;
 }
 
-.message--headerSpecial{
-    padding-left: 10px;
-    font-size: 15px;
-    font-weight: 500;
+.message--headerSpecial {
+  padding-left: 10px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .message--avatar {
-    padding: 10px;
+  padding: 10px;
 }
 
-.message--footer{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 70%;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+.message--footer {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 60%;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.message--fixed-message{
+  font-size: 12px;
+  font-weight: 500;
 }

@@ -55,7 +55,12 @@ func main() {
 
 	// エラー回避
 	c := cors.New(cors.Options{
-        AllowedOrigins: []string{"http://localhost:3000"},
+        AllowedOrigins:[]string{"http://localhost:3000"},
+		AllowedMethods:[]string{http.MethodHead,
+			http.MethodGet,
+			http.MethodPost,
+			http.MethodPut,
+			http.MethodDelete},
         AllowCredentials: true,
     })
     handler := c.Handler(router)

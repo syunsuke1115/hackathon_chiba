@@ -23,6 +23,8 @@ const MessageBox = forwardRef(
       setThreads,
       user_id,
       to_reply,
+      created_at,
+      updated_at,
     },
     ref
   ) => {
@@ -33,6 +35,8 @@ const MessageBox = forwardRef(
         avatar: avatar,
         text: text,
         image: image,
+        user_id: user_id,
+        to_reply: to_reply,
         createdTime: createdTime,
       });
 
@@ -51,6 +55,9 @@ const MessageBox = forwardRef(
     const fixPost = () => {
       setFixMode(true);
     };
+    const [fixMode, setFixMode] = useState(false);
+    const [fixText, setFixText] = useState(text);
+
     const updatePost = () => {
       axios
         .put(base_url + "/posts", {
@@ -59,10 +66,12 @@ const MessageBox = forwardRef(
           text: fixText,
           image: image,
           to_reply: to_reply,
+          id: parseInt(post_id),
         })
         .then((response) => {
           console.log(response.data);
-          alert("投稿を削除しました");
+          setFixMode(false);
+          alert("投稿を修正しました");
         })
         .catch((e) => {
           console.log("通信に失敗しました");
@@ -87,11 +96,13 @@ const MessageBox = forwardRef(
           console.log(e);
         });
     };
-    const [fixMode, setFixMode] = useState(false);
-    const [fixText, setFixText] = useState(text);
 
     return (
-      <div className="message" ref={ref} onClick={_selectPost}>
+      <div
+        className="message"
+        ref={ref}
+        onClick={to_reply == "0" ? _selectPost : () => {}}
+      >
         <div className="message--avatar">
           <Avatar src={avatar} variant="rounded" />
         </div>
@@ -122,7 +133,11 @@ const MessageBox = forwardRef(
                 </IconButton>
               </div>
             ) : (
-              <p>{text}</p>
+              <>
+                {" "}
+                <p>{text}</p>
+                {created_at != updated_at && <p className="message--fixed-message">（編集済み）</p>}
+              </>
             )}
           </div>
           {image && <img src={image} />}
