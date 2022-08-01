@@ -1,39 +1,44 @@
 import React, { useRef, useState } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Button} from "@mui/material";
+import { Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { Button } from "@mui/material";
 import "./Siginup.css";
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import base_url from "./URL";
 
-function Signup({setLoginUser}) {
-  const emailRef = useRef();
-  const nameRef = useRef("千葉");
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+function Signup({ setLoginUser }) {
+  const navigate = useNavigate()
+  const emailRef = useRef("");
+  const nameRef = useRef("");
+  const passwordRef = useRef("");
+  const passwordConfirmRef = useRef("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const signUp = (e) => {
-    const name = nameRef.current;
+    const name = nameRef.current.value;
     if (name == undefined || name == "") {
       alert("名前を入力してください");
       return;
     }
+    console.log(name)
     axios
       .post(base_url + "/users", {
-        name:name,
-        email:emailRef.current,
-        pass:passwordRef.current,
-        avator_image:""
+        name: name,
+        email: emailRef.current.value,
+        pass: passwordRef.current.value,
+        avator_image: "",
       })
       .then((response) => {
         console.log(response.data);
+        navigate("/login");
       })
       .catch((e) => {
         console.log(e);
         console.log("通信に失敗しました");
+        return;
       });
   };
 
@@ -75,8 +80,6 @@ function Signup({setLoginUser}) {
                 disabled={loading}
                 className="signup--button"
                 fullWidth
-                component={Link}
-                to="/login"
                 onClick={(e) => signUp(e)}
               >
                 {" "}
