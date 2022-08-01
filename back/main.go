@@ -80,9 +80,6 @@ func getPosts(w http.ResponseWriter,r *http.Request){
 
 		posts =append(posts, post)
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	json.NewEncoder(w).Encode(posts)
 }
 
@@ -102,15 +99,6 @@ func getPost(w http.ResponseWriter,r *http.Request){
 			return
 		}
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(post)
 }
 
@@ -124,15 +112,6 @@ func addPost(w http.ResponseWriter,r *http.Request){
 	&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply).Scan(&postID)
 	logFatal(err)
 
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(postID)
 }
 
@@ -146,23 +125,10 @@ func updatePost(w http.ResponseWriter,r *http.Request){
 
 	rowsUpdated,err:= result.RowsAffected()
 	logFatal(err)
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(rowsUpdated)
 }
 
 func deletePost(w http.ResponseWriter,r *http.Request){
-
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 	//プリフライトリクエストへの応答
 	if r.Method == "OPTIONS" {
@@ -196,15 +162,7 @@ func getReply(w http.ResponseWriter,r *http.Request){
 
 		posts =append(posts, post)
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(posts)
 }
 
@@ -223,15 +181,7 @@ func getUsers(w http.ResponseWriter,r *http.Request){
 
 		users =append(users, user)
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(users)
 }
 
@@ -245,15 +195,7 @@ func addUser(w http.ResponseWriter,r *http.Request){
 	err :=db.QueryRow("insert into users (name,email,pass,avator_image,created_at,updated_at) values($1,$2,$3,$4,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
 	&user.Name,&user.Email,&user.Pass,&user.Avator_image).Scan(&userID)
 	logFatal(err)
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(userID)
 }
 
@@ -267,15 +209,6 @@ func addChannel(w http.ResponseWriter,r *http.Request){
 	&channel.Name,&channel.Space_id).Scan(&channelID)
 	logFatal(err)
 
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(channelID)
 }
 
@@ -283,17 +216,7 @@ func addChannelUsers(w http.ResponseWriter,r *http.Request){
 	var channelUsers models.ChannelUsers
 	var channelUsersID int
 
-	
 	json.NewDecoder(r.Body).Decode(&channelUsers)
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	// idは自動で追加
 	err :=db.QueryRow("insert into channel_users (user_id,channel_id,created_at,updated_at) values($1,$2,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
 	&channelUsers.User_id,&channelUsers.Channel_id).Scan(&channelUsersID)
@@ -320,15 +243,7 @@ func getMyChannels(w http.ResponseWriter,r *http.Request){
 
 		mychannels =append(mychannels, channel)
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(mychannels)
 }
 
@@ -350,14 +265,6 @@ func getNotMyChannels(w http.ResponseWriter,r *http.Request){
 
 		notmychannels =append(notmychannels, channel)
 	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(notmychannels)
 }
