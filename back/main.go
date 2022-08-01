@@ -9,13 +9,16 @@ import (
 	"uttc-hackathon/driver"
 	"uttc-hackathon/models"
 
+	"github.com/rs/cors"
+
 	"github.com/gorilla/mux"
 	"github.com/subosito/gotenv"
 )
 
 var posts []models.Posts
 var users []models.Users
-var channels []models.Channels
+var mychannels []models.Channels
+var notmychannels []models.Channels
 var db *sql.DB
 
 func init(){
@@ -45,12 +48,20 @@ func main() {
 	router.HandleFunc("/users", addUser).Methods("POST")
 
 	// channels
-	router.HandleFunc("/channels/space/{space_id}", getChannels).Methods("GET")
 	router.HandleFunc("/channels", addChannel).Methods("POST")
 	router.HandleFunc("/channelUsers", addChannelUsers).Methods("POST")
+	router.HandleFunc("/mychannel/space/{space_id}/user_id/{user_id}", getMyChannels).Methods("GET")
+	router.HandleFunc("/notmychannel/space/{space_id}/user_id/{user_id}", getNotMyChannels).Methods("GET")
+
+	// エラー回避
+	c := cors.New(cors.Options{
+        AllowedOrigins: []string{"http://localhost:3000"},
+        AllowCredentials: true,
+    })
+    handler := c.Handler(router)
 
 	fmt.Println("server run")
-	log.Fatal(http.ListenAndServe(":8000",router))
+	log.Fatal(http.ListenAndServe(":8000",handler))
 }
 
 func getPosts(w http.ResponseWriter,r *http.Request){
@@ -58,13 +69,13 @@ func getPosts(w http.ResponseWriter,r *http.Request){
 	params :=mux.Vars(r)
 	posts = []models.Posts{}
 
-	rows, err := db.Query("select * from posts where channel_id=$1 and to_reply =0",params["channel_id"])
+	rows, err := db.Query("select posts.id,channel_id,user_id,text,image,to_reply,users.name as user_name,posts.created_at,posts.updated_at from posts join users on (posts.user_id = users.id) where channel_id=$1 and to_reply =0 ORDER BY posts.created_at",params["channel_id"])
 	logFatal(err)
 
 	defer rows.Close()
 
 	for rows.Next(){
-		err := rows.Scan(&post.ID,&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply,&post.Created_at,&post.Updated_at)
+		err := rows.Scan(&post.ID,&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply,&post.User_name,&post.Created_at,&post.Updated_at)
 		logFatal(err)
 
 		posts =append(posts, post)
@@ -72,12 +83,6 @@ func getPosts(w http.ResponseWriter,r *http.Request){
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 	json.NewEncoder(w).Encode(posts)
 }
 
@@ -154,12 +159,7 @@ func updatePost(w http.ResponseWriter,r *http.Request){
 }
 
 func deletePost(w http.ResponseWriter,r *http.Request){
-	params :=mux.Vars(r)
-	result,err := db.Exec("delete from posts where id = $1",params["id"])
-	logFatal(err)
 
-	rowsDeleted,err:= result.RowsAffected()
-	logFatal(err)
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -169,6 +169,13 @@ func deletePost(w http.ResponseWriter,r *http.Request){
 		w.WriteHeader(http.StatusOK)
 		return
 	}
+	params :=mux.Vars(r)
+	result,err := db.Exec("delete from posts where id = $1",params["id"])
+	logFatal(err)
+
+	rowsDeleted,err:= result.RowsAffected()
+	logFatal(err)
+
 	json.NewEncoder(w).Encode(rowsDeleted)
 }
 
@@ -178,13 +185,13 @@ func getReply(w http.ResponseWriter,r *http.Request){
 	params :=mux.Vars(r)
 	posts = []models.Posts{}
 
-	rows, err := db.Query("select * from posts where to_reply=$1",params["id"])
+	rows, err := db.Query("select posts.id,channel_id,user_id,text,image,to_reply,users.name as user_name,posts.created_at,posts.updated_at from posts join users on (posts.user_id = users.id) where to_reply=$1 ORDER BY posts.created_at",params["id"])
 	logFatal(err)
 
 	defer rows.Close()
 
 	for rows.Next(){
-		err := rows.Scan(&post.ID,&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply,&post.Created_at,&post.Updated_at)
+		err := rows.Scan(&post.ID,&post.Channel_id,&post.User_id,&post.Text,&post.Image,&post.To_reply,&post.User_name,&post.Created_at,&post.Updated_at)
 		logFatal(err)
 
 		posts =append(posts, post)
@@ -250,35 +257,6 @@ func addUser(w http.ResponseWriter,r *http.Request){
 	json.NewEncoder(w).Encode(userID)
 }
 
-func getChannels(w http.ResponseWriter,r *http.Request){
-	var channel models.Channels
-	channels = []models.Channels{}
-	params :=mux.Vars(r)
-
-	rows, err := db.Query("select * from channels where space_id=$1",params["space_id"])
-
-	logFatal(err)
-
-	defer rows.Close()
-
-	for rows.Next(){
-		err := rows.Scan(&channel.ID,&channel.Name,&channel.Space_id,&channel.Created_at,&channel.Updated_at)
-		logFatal(err)
-
-		channels =append(channels, channel)
-	}
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-
-	//プリフライトリクエストへの応答
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-	json.NewEncoder(w).Encode(channels)
-}
-
 func addChannel(w http.ResponseWriter,r *http.Request){
 	var channel models.Channels
 	var channelID int
@@ -304,12 +282,44 @@ func addChannel(w http.ResponseWriter,r *http.Request){
 func addChannelUsers(w http.ResponseWriter,r *http.Request){
 	var channelUsers models.ChannelUsers
 	var channelUsersID int
+
 	
 	json.NewDecoder(r.Body).Decode(&channelUsers)
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+
+	//プリフライトリクエストへの応答
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	// idは自動で追加
 	err :=db.QueryRow("insert into channel_users (user_id,channel_id,created_at,updated_at) values($1,$2,transaction_timestamp(),transaction_timestamp()) RETURNING id;",
 	&channelUsers.User_id,&channelUsers.Channel_id).Scan(&channelUsersID)
 	logFatal(err)
+
+	json.NewEncoder(w).Encode(channelUsersID)
+}
+
+func getMyChannels(w http.ResponseWriter,r *http.Request){
+	// 入っているチャンネルのみ取得
+	var channel models.Channels
+	mychannels = []models.Channels{}
+	params :=mux.Vars(r)
+
+	rows, err := db.Query("select distinct(channels.id),name,channels.space_id,channels.created_at,channels.updated_at from channels join channel_users on(channels.id = channel_users.channel_id) where space_id=$1 and user_id=$2;",params["space_id"],params["user_id"])
+
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next(){
+		err := rows.Scan(&channel.ID,&channel.Name,&channel.Space_id,&channel.Created_at,&channel.Updated_at)
+		logFatal(err)
+
+		mychannels =append(mychannels, channel)
+	}
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -319,5 +329,35 @@ func addChannelUsers(w http.ResponseWriter,r *http.Request){
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-	json.NewEncoder(w).Encode(channelUsersID)
+	json.NewEncoder(w).Encode(mychannels)
+}
+
+func getNotMyChannels(w http.ResponseWriter,r *http.Request){
+	// 入っていないチャンネルのみ取得
+	var channel models.Channels
+	notmychannels = []models.Channels{}
+	params :=mux.Vars(r)
+
+	rows, err := db.Query("select distinct(channels.id),name,channels.space_id,channels.created_at,channels.updated_at from channels join channel_users on(channels.id = channel_users.channel_id) where space_id=$1 and channels.id not in (select channels.id from channels join channel_users on(channels.id = channel_users.channel_id) where space_id=1 and channel_users.user_id =$2);",params["space_id"],params["user_id"])
+
+	logFatal(err)
+
+	defer rows.Close()
+
+	for rows.Next(){
+		err := rows.Scan(&channel.ID,&channel.Name,&channel.Space_id,&channel.Created_at,&channel.Updated_at)
+		logFatal(err)
+
+		notmychannels =append(notmychannels, channel)
+	}
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+	//プリフライトリクエストへの応答
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+	json.NewEncoder(w).Encode(notmychannels)
 }

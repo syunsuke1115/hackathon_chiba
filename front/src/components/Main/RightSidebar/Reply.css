@@ -1,5 +1,6 @@
 .reply{
     padding-bottom: 10px;
+    padding-top: 10px;
     border-top: 1px solid var(--slack-background);
     border-bottom: 1px solid var(--slack-background);
     padding-right: 10px;
@@ -16,10 +17,14 @@
 
 .reply--input > input{
     flex: 0.95;
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 20px;
     padding: 5px;
     border: none;
+}
+
+.reply--input > input:focus{
+    outline: none;
 }
 
 .reply--imageButton{
@@ -31,7 +36,12 @@
     flex: 0.95;
     border: none;
     padding: 5px;
+    font-size: 15px;
     margin-left: 20px;
+}
+
+.reply--imageInput:focus{
+    outline: none;
 }
 
 .reply--postButton{

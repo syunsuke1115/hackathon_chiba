@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Button} from "@mui/material";
 import "./Siginup.css";
 import { Container } from "react-bootstrap";
+import axios from "axios";
+import base_url from "./URL";
 
 function Signup({setLoginUser}) {
   const emailRef = useRef();
@@ -14,7 +16,25 @@ function Signup({setLoginUser}) {
   const [loading, setLoading] = useState(false);
 
   const signUp = (e) => {
-    
+    const name = nameRef.current;
+    if (name == undefined || name == "") {
+      alert("名前を入力してください");
+      return;
+    }
+    axios
+      .post(base_url + "/users", {
+        name:name,
+        email:emailRef.current,
+        pass:passwordRef.current,
+        avator_image:""
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("通信に失敗しました");
+      });
   };
 
   return (

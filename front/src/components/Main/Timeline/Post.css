@@ -33,6 +33,14 @@
     margin-left: 20px;
 }
 
+.post--input > input:focus{
+    outline: none;
+}
+
+.post--imageInput:focus{
+    outline: none;
+}
+
 .post--postButton{
     background-color: var(--slack-string-light) !important;
     color: white !important;

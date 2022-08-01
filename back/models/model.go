@@ -7,6 +7,7 @@ type Posts struct{
 	Text string `json:"text"`
 	Image string `json:"image"`
 	To_reply string `json:"to_reply"`
+	User_name string `json:"user_name"`
 	Created_at string `json:"created_at"`
 	Updated_at string `json:"updated_at"`
 }

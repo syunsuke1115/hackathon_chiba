@@ -3,13 +3,15 @@ import { Container } from "react-bootstrap";
 import axios from "axios";
 import User from "./User";
 import "./SelectUser.css";
+import base_url from "./URL"
 
-function SelectUser({ setLoginUser }) {
+function SelectUser({ setLoginUser,setMydata}) {
   const [users, setUsers] = useState([]);
 
   const getUsersData = () => {
+    console.log(base_url+"/users");
     axios
-    .get("http://localhost:8000/users")
+    .get(base_url+"/users")
     .then((response) => {
       console.log(response.data)
       setUsers(response.data);
@@ -42,7 +44,7 @@ function SelectUser({ setLoginUser }) {
           <tbody>
             {users.map((user) => {
               return (
-                <User key={user.id} user={user} setLoginUser={setLoginUser} />
+                <User key={user.id} user={user} setLoginUser={setLoginUser} setMydata={setMydata}/>
               );
             })}
           </tbody>

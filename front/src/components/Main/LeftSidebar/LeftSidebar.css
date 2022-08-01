@@ -16,7 +16,35 @@
     border-bottom: 0.5px solid var(--slack-border);
 }
 
-.left-channel--header >h2{
+.left-channel--header-top >h2{
+    flex: 0.95;
+    padding-left: 10px;
+    color: var(--slack-string-light);
+    font-size: 20px ;
+    font-weight: 800;
+}
+.left-channel--header-top{
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+}
+
+.left-channel--add-input:focus{
+    outline: none;
+}
+
+.left-channel--add-input{
+    background-color: var(--slack-color) !important;
+    color: white !important;
+    border-radius: 5px!important;
+    width: 120px !important;
+    height: 25px !important;
+    font-size: 20px ;
+    font-weight: 800;
+    margin-right: 10px;
+}
+
+.left-channel--header-bottom >h2{
     padding-left: 10px;
     color: var(--slack-string-light);
     font-size: 20px ;

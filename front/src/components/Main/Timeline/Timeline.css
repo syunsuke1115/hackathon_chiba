@@ -4,6 +4,9 @@
     border-right: 1px solid var(--slack-background);
     overflow-y: scroll;
 }
+.timeline--active {
+    flex:0.75;
+}
 
 .timeline::-webkit-scrollbar{
     display: none;

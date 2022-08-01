@@ -34,3 +34,12 @@ p{
 .message--avatar {
     padding: 10px;
 }
+
+.message--footer{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 70%;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

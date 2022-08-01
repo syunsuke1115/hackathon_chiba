@@ -5,11 +5,13 @@ import Home from "./components/Home";
 import Main from "./components/Main";
 import Signup from "./components/Signup";
 import SelectUser from "./components/SelectUser";
+import { usePersist } from './usePersist'
 
 function App() {
   // ログイン中のユーザーを管理する
   // TODO リロードするとログイン情報が消えてしまう。
-  const [loginUser, setLoginUser] = useState({id:"",username:""});
+  const [mydata, setMydata] = usePersist('mydata', null)
+  const [loginUser, setLoginUser] = useState(mydata ||{id:"",username:""});
 
   return (
     <div>
@@ -19,11 +21,11 @@ function App() {
           <Route path="/main" element={<Main loginUser={loginUser} />} />
           <Route
             path="/signup"
-            element={<Signup setLoginUser={setLoginUser} />}
+            element={<Signup setLoginUser={setLoginUser}  />}
           />
           <Route
             path="/login"
-            element={<SelectUser setLoginUser={setLoginUser} />}
+            element={<SelectUser setLoginUser={setLoginUser} setMydata={setMydata}/>}
           />
         </Routes>
       </BrowserRouter>
