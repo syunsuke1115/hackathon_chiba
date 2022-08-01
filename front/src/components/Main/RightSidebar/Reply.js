@@ -5,7 +5,7 @@ import "./Reply.css";
 import axios from "axios";
 import base_url from "../../URL";
 
-function Reply({ nowChannel, loginUser, selectPost,setThreads}) {
+function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
 
@@ -36,6 +36,8 @@ function Reply({ nowChannel, loginUser, selectPost,setThreads}) {
       .catch((e) => {
         console.log("通信に失敗しました");
       });
+    setMessage("");
+    setImage("");
   };
 
   return (
