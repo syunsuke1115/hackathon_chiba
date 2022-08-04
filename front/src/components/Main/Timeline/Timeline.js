@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import Post from "./Post";
 import "./Timeline.css";
 import FlipMove from "react-flip-move";
 import MessageBox from "../Widget/MessageBox";
 import axios from "axios";
-import base_url from "../../URL";
 
 function Timeline({
   nowChannel,
@@ -18,7 +17,11 @@ function Timeline({
   const getPostsData = () => {
     // TODO ワークスペース選択を実装したらspaceを変数にする
     axios
-      .get(base_url + "/posts/channel/" + (nowChannel.id ? nowChannel.id : 1))
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          "/posts/channel/" +
+          (nowChannel.id ? nowChannel.id : 1)
+      )
       .then((response) => {
         console.log(response.data);
         setPosts(response.data);
@@ -39,7 +42,11 @@ function Timeline({
       {/* チャンネル名 */}
       <div className="timeline--header">
         <h2>{nowChannel.name}</h2>
-        <Post nowChannel={nowChannel} loginUser={loginUser} setPosts={setPosts}/>
+        <Post
+          nowChannel={nowChannel}
+          loginUser={loginUser}
+          setPosts={setPosts}
+        />
       </div>
       <FlipMove>
         {posts.map((post) => (
