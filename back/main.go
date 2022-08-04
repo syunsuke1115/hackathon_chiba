@@ -56,7 +56,7 @@ func main() {
 
 	// エラー回避
 	c := cors.New(cors.Options{
-        AllowedOrigins:[]string{"https://hackathon-chiba.vercel.app"},
+        AllowedOrigins:[]string{"https://hackathon-chiba.vercel.app","http://localhost:3000"},
 		AllowedMethods:[]string{http.MethodHead,
 			http.MethodGet,
 			http.MethodPost,
