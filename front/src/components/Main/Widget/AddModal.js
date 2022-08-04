@@ -32,7 +32,8 @@ function AddModal({ show, loginUser, setModal }) {
             withCredentials: true,
           })
           .then(() => {
-            alert(inputText + "に参加しました");
+            alert(inputText + "を作成しました");
+            setModal(false);
           })
           .catch((e) => {
             console.log("通信に失敗しました");
@@ -71,7 +72,7 @@ function AddModal({ show, loginUser, setModal }) {
               className={`modal--Button ${inputText.length && "modal--Button-active"}`}
               onClick={() => {
                 addChannelData();
-                setModal(false);
+                
               }}
             >
               作成
