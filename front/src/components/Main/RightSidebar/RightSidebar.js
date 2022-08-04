@@ -45,8 +45,8 @@ function RightSidebar({ nowChannel, loginUser, post, threads, setThreads }) {
             nowChannel={nowChannel}
             user_id={thread.user_id}
             to_reply={thread.to_reply}
-            created_at={post.created_at}
-            updated_at={post.updated_at}
+            created_at={thread.created_at}
+            updated_at={thread.updated_at}
           />
         ))}
       </FlipMove>
