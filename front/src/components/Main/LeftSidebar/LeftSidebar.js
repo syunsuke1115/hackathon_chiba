@@ -21,44 +21,8 @@ function LeftSidebar({
   loginUser,
   setNowChannel,
   setPosts,
+  setModal,
 }) {
-  const [newChannelName, setNewChannelName] = useState("");
-  const addChannelData = () => {
-    if (loginUser.id == undefined || loginUser.id == "") {
-      alert("ログインしてください");
-      return;
-    }
-    if (newChannelName == undefined || newChannelName == "") {
-      alert("チャンネル名を入力してください");
-      return;
-    }
-
-    // 新しいチャンネルを作成し、自分自身を追加する。
-    // TODO ワークスペース選択を実装したらspaceを変数にする
-    axios
-      .post(base_url + "/channels", {
-        Name: newChannelName,
-        Space_id: 1,
-      })
-      .then((response) => {
-        axios
-          .post(base_url + "/channelUsers", {
-            User_id: loginUser.id,
-            Channel_id: response.data,
-            withCredentials: true,
-          })
-          .then((response) => {
-            alert(newChannelName + "に参加しました");
-          })
-          .catch((e) => {
-            console.log("通信に失敗しました");
-          });
-      })
-      .catch((e) => {
-        console.log("通信に失敗しました");
-      });
-  };
-
   return (
     <div className="left-sidebar">
       {/* ワークスペース名 */}
@@ -77,17 +41,10 @@ function LeftSidebar({
       <div className="left-channel--header">
         <div className="left-channel--header-top">
           <h2>チャンネル</h2>
-          <input
-            className="left-channel--add-input"
-            placeholder="作成"
-            type="text"
-            value={newChannelName}
-            onChange={(e) => setNewChannelName(e.target.value)}
-          ></input>
           <div className="channel--add-icon">
             <IconButton
               onClick={() => {
-                addChannelData();
+                setModal(true);
               }}
               style={{ color: "#666666", margin: 0, padding: 0 }}
             >
@@ -101,7 +58,7 @@ function LeftSidebar({
               key={channel.id}
               text={channel.name}
               Icon={LockOpenIcon}
-              active={nowChannel.id==channel.id}
+              active={nowChannel.id == channel.id}
               setNowChannel={setNowChannel}
               setPosts={setPosts}
               channel_id={channel.id}
@@ -121,7 +78,7 @@ function LeftSidebar({
               addIcon={true}
               loginUser={loginUser}
               channel_id={notMychannel.id}
-              setNowChannel={()=>{}}
+              setNowChannel={() => {}}
             />
           );
         })}

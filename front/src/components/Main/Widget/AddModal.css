@@ -1,0 +1,75 @@
+.modal--overlay {
+    /*　画面全体を覆う設定　*/
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+    z-index: 150;
+
+    /*　画面の中央に要素を表示させる設定　*/
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.modal--content{
+    width:60%;
+    height:30%;
+    padding: 20px;
+    background:#fff;
+}
+
+.modal--header{
+    display: flex;
+    flex: 1;
+    cursor: pointer;
+}
+
+.modal--header >h2{
+    flex: 1;
+    font-weight: 800;
+    font-size: 25px ;
+}
+
+.modal--close{
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.modal--content >h5{
+    margin-top: 20px;
+    flex: 1;
+    font-weight: 800;
+    font-size: 20px ;
+}
+
+.modal--input{
+    padding: 5px;
+    width: 100%;
+    border-radius: 5px;
+    border-color: var(--slack-string-light);
+    margin-bottom: 20px;
+}
+
+.modal--input:focus{
+    outline: none;
+}
+
+.modal--Button{
+    background-color: lightgray !important;
+    color: var(--slack-string) !important;
+    font-weight: 900 !important;
+    width: 80px !important;
+    height: 40px !important;
+    border-radius: 5px!important;
+    margin-top: 10px !important;
+    margin-left: auto !important;
+    display: flex !important;
+}
+
+.modal--Button-active{
+    background-color: var(--slack-string-light) !important;
+    color: white !important;
+}

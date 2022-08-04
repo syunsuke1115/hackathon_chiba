@@ -5,6 +5,8 @@ import Timeline from "./Main/Timeline/Timeline";
 import "./Main.css";
 import axios from "axios";
 import base_url from "./URL";
+import { Modal } from "@mui/material";
+import AddModal from "./Main/Widget/AddModal";
 
 function Main({ loginUser }) {
   const [nowChannel, setNowChannel] = useState({ id: 1, name: "UTTC" });
@@ -12,6 +14,7 @@ function Main({ loginUser }) {
   const [notMychannels, setNotMyChannels] = useState(["general"]);
   const [posts, setPosts] = useState([]);
   const [selectPost, setSelectPost] = useState({});
+  const [modal, setModal] = useState(false);
 
   const [threads, setThreads] = useState([
     // {
@@ -61,32 +64,36 @@ function Main({ loginUser }) {
   }, []);
 
   return (
-    <div className="main">
-      <LeftSidebar
-        nowChannel={nowChannel}
-        myChannels={myChannels}
-        notMychannels={notMychannels}
-        loginUser={loginUser}
-        setNowChannel={setNowChannel}
-        setPosts={setPosts}
-        setSelectPost={setSelectPost}
-      />
-      <Timeline
-        nowChannel={nowChannel}
-        loginUser={loginUser}
-        posts={posts}
-        setPosts={setPosts}
-        selectPost={selectPost}
-        setSelectPost={setSelectPost}
-        setThreads={setThreads}
-      />
-      <RightSidebar
-        nowChannel={nowChannel}
-        loginUser={loginUser}
-        post={selectPost}
-        threads={threads}
-        setThreads={setThreads}
-      />
+    <div>
+      <div className="main">
+        <LeftSidebar
+          nowChannel={nowChannel}
+          myChannels={myChannels}
+          notMychannels={notMychannels}
+          loginUser={loginUser}
+          setNowChannel={setNowChannel}
+          setPosts={setPosts}
+          setSelectPost={setSelectPost}
+          setModal={setModal}
+        />
+        <Timeline
+          nowChannel={nowChannel}
+          loginUser={loginUser}
+          posts={posts}
+          setPosts={setPosts}
+          selectPost={selectPost}
+          setSelectPost={setSelectPost}
+          setThreads={setThreads}
+        />
+        <RightSidebar
+          nowChannel={nowChannel}
+          loginUser={loginUser}
+          post={selectPost}
+          threads={threads}
+          setThreads={setThreads}
+        />
+      </div>
+      <AddModal loginUser={loginUser} show={modal} setModal={setModal}/>
     </div>
   );
 }
