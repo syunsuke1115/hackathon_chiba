@@ -121,6 +121,7 @@ function LeftSidebar({
               addIcon={true}
               loginUser={loginUser}
               channel_id={notMychannel.id}
+              setNowChannel={()=>{}}
             />
           );
         })}
