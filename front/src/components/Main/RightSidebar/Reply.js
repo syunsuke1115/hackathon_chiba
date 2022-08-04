@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import "./Reply.css";
 import axios from "axios";
+import SplitButton from "../Widget/PostButton.js";
 
 function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
   const [message, setMessage] = useState("");
@@ -63,15 +64,12 @@ function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
           type="text"
           onChange={(e) => setImage(e.target.value)}
         ></input>
-        <Button
-          className={`reply--postButton ${
-            message.length + image.length && "reply--postButton--active"
-          }`}
-          type="submit"
-          onClick={reply}
-        >
-          <SendIcon />
-        </Button>
+        <SplitButton 
+          message={message}
+          image={image}
+          setMessage={setMessage}
+          handleClick={reply}
+        />
       </div>
     </div>
   );
