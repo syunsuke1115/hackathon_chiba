@@ -60,7 +60,13 @@ function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
           type="text"
           onChange={(e) => setImage(e.target.value)}
         ></input>
-        <Button className="reply--postButton" type="submit" onClick={reply}>
+        <Button
+          className={`reply--postButton ${
+            message.length + image.length && "reply--postButton--active"
+          }`}
+          type="submit"
+          onClick={reply}
+        >
           <SendIcon />
         </Button>
       </div>

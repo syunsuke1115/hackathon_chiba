@@ -63,7 +63,13 @@ function Post({ nowChannel, loginUser, setPosts }) {
           type="text"
           onChange={(e) => setImage(e.target.value)}
         ></input>
-        <Button className="post--postButton" type="submit" onClick={post}>
+        <Button
+          className={`post--postButton ${
+            message.length + image.length && "post--postButton--active"
+          }`}
+          type="submit"
+          onClick={post}
+        >
           <SendIcon />
         </Button>
       </div>

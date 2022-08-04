@@ -42,12 +42,17 @@
 }
 
 .post--postButton{
-    background-color: var(--slack-string-light) !important;
-    color: white !important;
+    background-color: white !important;
+    color: lightgray !important;
     font-weight: 900 !important;
     width: 80px !important;
     height: 40px !important;
     border-radius: 5px!important;
     margin-top: 20px !important;
     margin-left: auto !important;
+}
+
+.post--postButton--active{
+    background-color: var(--slack-string-light) !important;
+    color: white !important;
 }
