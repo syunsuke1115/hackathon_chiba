@@ -45,6 +45,7 @@ function RightSidebar({ nowChannel, loginUser, post, threads, setThreads }) {
             nowChannel={nowChannel}
             user_id={thread.user_id}
             to_reply={thread.to_reply}
+            post_id={thread.id}
             created_at={thread.created_at}
             updated_at={thread.updated_at}
           />

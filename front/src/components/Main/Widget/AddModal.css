@@ -59,6 +59,7 @@
 
 .modal--Button{
     font-weight: 900 !important;
+    color: var(--slack-string-light) !important;
     width: 80px !important;
     height: 40px !important;
     border-radius: 5px!important;

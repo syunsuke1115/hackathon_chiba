@@ -1,14 +1,14 @@
-.user--button{
-    background-color: var(--slack-button-color) !important;
-    color: white !important;
-    font-weight: 900 !important;
-    border:  none !important;
-    border-radius:8px !important;
-    height: 50px !important;
-    width: 100px !important;
-    font-size: 20px !important;
-}
-
 .user--text{
     font-size: 20px;
+    font-weight: 600 !important;
+}
+
+.user--button{
+    font-weight: 900 !important;
+    background-color: var(--slack-string-light) !important;
+    color: white !important;
+    width: 100px !important;
+    height: 40px !important;
+    border-radius: 5px!important;
+    font-size: 20px !important;
 }
