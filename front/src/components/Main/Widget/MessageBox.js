@@ -8,6 +8,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MessageIcon from "@mui/icons-material/Message";
 import { IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import moment from "moment";
+import "moment/locale/ja";
 
 const MessageBox = forwardRef(
   (
@@ -38,6 +40,8 @@ const MessageBox = forwardRef(
         user_id: user_id,
         to_reply: to_reply,
         createdTime: createdTime,
+        created_at: created_at,
+        updated_at: updated_at,
       });
 
       axios
@@ -111,7 +115,9 @@ const MessageBox = forwardRef(
             <div className="message--headerText">
               <h3>
                 {username}
-                <span className="message--headerSpecial">{createdTime}</span>
+                <span className="message--headerSpecial">
+                  {created_at&&moment(created_at).fromNow()}
+                </span>
               </h3>
             </div>
           </div>
@@ -136,7 +142,9 @@ const MessageBox = forwardRef(
               <>
                 {" "}
                 <p>{text}</p>
-                {created_at != updated_at && <p className="message--fixed-message">（編集済み）</p>}
+                {created_at != updated_at && (
+                  <p className="message--fixed-message">（編集済み）</p>
+                )}
               </>
             )}
           </div>

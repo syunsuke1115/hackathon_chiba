@@ -15,14 +15,7 @@ function Main({ loginUser }) {
   const [posts, setPosts] = useState([]);
   const [selectPost, setSelectPost] = useState({});
   const [modal, setModal] = useState(false);
-
-  const [threads, setThreads] = useState([
-    // {
-    //   text: "初めてのスレッド",
-    //   username: "千葉駿介",
-    //   createdTime: "7月23日 18:59",
-    // }
-  ]);
+  const [threads, setThreads] = useState([]);
 
   const getMyChannelsData = () => {
     // TODO ワークスペース選択を実装したらspaceを変数にする

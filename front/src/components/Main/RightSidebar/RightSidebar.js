@@ -24,6 +24,8 @@ function RightSidebar({ nowChannel, loginUser, post, threads, setThreads }) {
           nowChannel={nowChannel}
           user_id={post.user_id}
           to_reply={post.to_reply}
+          created_at={post.created_at}
+          updated_at={post.updated_at}
         />
         <div className="right-sidebar--reply">
           <h6>{threads.length}件の返信</h6>
