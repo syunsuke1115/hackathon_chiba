@@ -1,19 +1,17 @@
-FROM golang:1.18-buster as builder
+FROM golang:1.18 as build
 
+# コンテナ上にアプリケーション(main.goのビルド成果物)を配置するdirectoryを作成
 WORKDIR /app
 
-COPY go.* ./
+# ソースをコピー
+COPY ./ ./
 RUN go mod download
 
-COPY . ./
+# goファイルのビルド
+RUN GOOS=linux GOARCH=amd64 go build -mod=readonly -v -o server
 
-RUN go build -v -o server
+# docker コンテナの50001ポートをこのサービスのために使用
+EXPOSE 8080
 
-FROM debian:buster-slim
-RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /app/server /app/server
-
-CMD ["/app/server"]
+# apiサーバを起動
+CMD /app/server
