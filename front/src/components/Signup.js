@@ -51,7 +51,7 @@ function Signup({ setLoginUser }) {
         <Card>
           <Card.Body>
             <div className="signup--message">
-              <h1>Slackへようこそ</h1>
+              <h1>ChiBackへようこそ</h1>
             </div>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form>

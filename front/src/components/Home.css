@@ -21,6 +21,10 @@
     margin-top: 20px !important;
 }
 
+.home--message >h1{
+    flex: 1;
+    font-weight: 800;
+}
 
 .home--horizontal-line{
     color: var(--slack-border) !important;

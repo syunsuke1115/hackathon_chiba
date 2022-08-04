@@ -15,7 +15,7 @@ function Home() {
       <div className="w-100" style={{ maxWidth: "400px" }}>
         <img src={HomeImage} />
         <div className="home--message">
-          <h1>Slackへようこそ</h1>
+          <h1>ChiBackへようこそ</h1>
         </div>
         <Button
           variant="outlined"
