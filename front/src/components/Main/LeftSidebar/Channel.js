@@ -3,7 +3,6 @@ import "./Channel.css";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import axios from "axios";
-import base_url from "../../URL";
 
 function Channel({
   text,
@@ -13,7 +12,7 @@ function Channel({
   loginUser,
   channel_id,
   setNowChannel,
-  setPosts
+  setPosts,
 }) {
   const addChannelUserData = () => {
     // TODO ワークスペース選択を実装したらspaceを変数にする
@@ -22,7 +21,7 @@ function Channel({
       return;
     }
     axios
-      .post(base_url + "/channelUsers", {
+      .post(process.env.REACT_APP_BASE_URL + "/channelUsers", {
         User_id: loginUser.id,
         Channel_id: channel_id,
         withCredentials: true,
@@ -36,12 +35,16 @@ function Channel({
   };
 
   const changeChannel = () => {
-    console.log(channel_id)
+    console.log(channel_id);
     setNowChannel({ id: channel_id, name: text });
     // TODO ワークスペース選択を実装したらspaceを変数にする
     // タイムラインを更新
     axios
-      .get(base_url + "/posts/channel/" + (channel_id ? channel_id : 1))
+      .get(
+        process.env.REACT_APP_BASE_URL +
+          "/posts/channel/" +
+          (channel_id ? channel_id : 1)
+      )
       .then((response) => {
         setPosts(response.data);
       })
@@ -54,7 +57,7 @@ function Channel({
   return (
     <div
       className={`channel ${active && "channel--active"}`}
-      onClick={~addIcon &&changeChannel}
+      onClick={~addIcon && changeChannel}
     >
       <Icon />
       <h2>{text}</h2>

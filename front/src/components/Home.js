@@ -1,6 +1,6 @@
 import React from "react";
 import "./Main";
-import { Link, NavLink } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { Button, Box, Typography } from "@mui/material";
 import "./Home.css";
 import HomeImage from "../img/home_image.svg";

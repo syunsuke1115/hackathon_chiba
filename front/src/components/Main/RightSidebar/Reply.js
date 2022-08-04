@@ -3,7 +3,6 @@ import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import "./Reply.css";
 import axios from "axios";
-import base_url from "../../URL";
 
 function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
   const [message, setMessage] = useState("");
@@ -13,7 +12,7 @@ function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
     // ボタンを押しても画面をリロードしない
     e.preventDefault();
     axios
-      .post(base_url + "/posts", {
+      .post(process.env.REACT_APP_BASE_URL + "/posts", {
         channel_id: nowChannel.id.toString(),
         user_id: loginUser.id.toString(),
         text: message,
@@ -23,7 +22,11 @@ function Reply({ nowChannel, loginUser, selectPost, setThreads }) {
       .then((response) => {
         console.log(response.data);
         axios
-          .get(base_url + "/posts/reply/" + selectPost.id.toString())
+          .get(
+            process.env.REACT_APP_BASE_URL +
+              "/posts/reply/" +
+              selectPost.id.toString()
+          )
           .then((response) => {
             console.log(response.data);
             setThreads(response.data);

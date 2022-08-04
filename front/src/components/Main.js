@@ -4,8 +4,6 @@ import RightSidebar from "./Main/RightSidebar/RightSidebar";
 import Timeline from "./Main/Timeline/Timeline";
 import "./Main.css";
 import axios from "axios";
-import base_url from "./URL";
-import { Modal } from "@mui/material";
 import AddModal from "./Main/Widget/AddModal";
 
 function Main({ loginUser }) {
@@ -21,7 +19,7 @@ function Main({ loginUser }) {
     // TODO ワークスペース選択を実装したらspaceを変数にする
     axios
       .get(
-        base_url +
+        process.env.REACT_APP_BASE_URL +
           "/mychannel/space/1/user_id/" +
           (loginUser.id ? loginUser.id : 0)
       )
@@ -38,7 +36,7 @@ function Main({ loginUser }) {
     // TODO ワークスペース選択を実装したらspaceを変数にする
     axios
       .get(
-        base_url +
+        process.env.REACT_APP_BASE_URL +
           "/notmychannel/space/1/user_id/" +
           (loginUser.id ? loginUser.id : 0)
       )
@@ -86,7 +84,7 @@ function Main({ loginUser }) {
           setThreads={setThreads}
         />
       </div>
-      <AddModal loginUser={loginUser} show={modal} setModal={setModal}/>
+      <AddModal loginUser={loginUser} show={modal} setModal={setModal} />
     </div>
   );
 }

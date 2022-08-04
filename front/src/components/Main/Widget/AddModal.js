@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./AddModal.css";
 import { Button } from "@mui/material";
 import axios from "axios";
-import base_url from "../../URL";
 import CloseIcon from "@mui/icons-material/Close";
 
 function AddModal({ show, loginUser, setModal }) {
@@ -20,13 +19,13 @@ function AddModal({ show, loginUser, setModal }) {
     // 新しいチャンネルを作成し、自分自身を追加する。
     // TODO ワークスペース選択を実装したらspaceを変数にする
     axios
-      .post(base_url + "/channels", {
+      .post(process.env.REACT_APP_BASE_URL + "/channels", {
         Name: inputText,
         Space_id: 1,
       })
       .then((response) => {
         axios
-          .post(base_url + "/channelUsers", {
+          .post(process.env.REACT_APP_BASE_URL + "/channelUsers", {
             User_id: loginUser.id,
             Channel_id: response.data,
             withCredentials: true,
@@ -50,7 +49,8 @@ function AddModal({ show, loginUser, setModal }) {
         <div className="modal--content">
           <div className="modal--header">
             <h2>チャンネルを作成する</h2>
-            <CloseIcon className="modal--close"
+            <CloseIcon
+              className="modal--close"
               onClick={() => {
                 setModal(false);
               }}
@@ -69,10 +69,11 @@ function AddModal({ show, loginUser, setModal }) {
             {" "}
             <Button
               type="submit"
-              className={`modal--Button ${inputText.length && "modal--Button-active"}`}
+              className={`modal--Button ${
+                inputText.length && "modal--Button-active"
+              }`}
               onClick={() => {
                 addChannelData();
-                
               }}
             >
               作成

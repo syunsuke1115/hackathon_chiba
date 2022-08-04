@@ -1,15 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
-import { Link} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import "./Siginup.css";
 import { Container } from "react-bootstrap";
 import axios from "axios";
-import base_url from "./URL";
 
 function Signup({ setLoginUser }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const emailRef = useRef("");
   const nameRef = useRef("");
   const passwordRef = useRef("");
@@ -23,9 +22,9 @@ function Signup({ setLoginUser }) {
       alert("名前を入力してください");
       return;
     }
-    console.log(name)
+    console.log(name);
     axios
-      .post(base_url + "/users", {
+      .post(process.env.REACT_APP_BASE_URL + "/users", {
         name: name,
         email: emailRef.current.value,
         pass: passwordRef.current.value,

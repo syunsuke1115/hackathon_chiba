@@ -3,22 +3,21 @@ import { Container } from "react-bootstrap";
 import axios from "axios";
 import User from "./User";
 import "./SelectUser.css";
-import base_url from "./URL"
 
-function SelectUser({ setLoginUser,setMydata}) {
+function SelectUser({ setLoginUser, setMydata }) {
   const [users, setUsers] = useState([]);
 
   const getUsersData = () => {
-    console.log(base_url+"/users");
+    console.log(process.env.REACT_APP_BASE_URL + "/users");
     axios
-    .get(base_url+"/users")
-    .then((response) => {
-      console.log(response.data)
-      setUsers(response.data);
-    })
-    .catch(() => {
-      console.log("通信に失敗しました");
-    });
+      .get(process.env.REACT_APP_BASE_URL + "/users")
+      .then((response) => {
+        console.log(response.data);
+        setUsers(response.data);
+      })
+      .catch(() => {
+        console.log("通信に失敗しました");
+      });
   };
 
   useEffect(() => {
@@ -44,7 +43,12 @@ function SelectUser({ setLoginUser,setMydata}) {
           <tbody>
             {users.map((user) => {
               return (
-                <User key={user.id} user={user} setLoginUser={setLoginUser} setMydata={setMydata}/>
+                <User
+                  key={user.id}
+                  user={user}
+                  setLoginUser={setLoginUser}
+                  setMydata={setMydata}
+                />
               );
             })}
           </tbody>

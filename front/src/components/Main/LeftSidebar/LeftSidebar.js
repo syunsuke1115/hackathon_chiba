@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./LeftSidebar.css";
 import SidebarOption from "./SidebarOption";
 import SearchIcon from "@mui/icons-material/Search";
@@ -9,10 +9,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import Channel from "./Channel";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AddIcon from "@mui/icons-material/Add";
-import { dialogClasses, IconButton } from "@mui/material";
-import { TrafficOutlined } from "@mui/icons-material";
-import axios from "axios";
-import base_url from "../../URL";
+import {IconButton } from "@mui/material";
 
 function LeftSidebar({
   nowChannel,

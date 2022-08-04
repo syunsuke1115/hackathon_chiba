@@ -2,7 +2,6 @@ import React, { forwardRef, useState } from "react";
 import "./MessageBox.css";
 import { Avatar } from "@mui/material";
 import axios from "axios";
-import base_url from "../../URL";
 import { FavoriteBorder } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MessageIcon from "@mui/icons-material/Message";
@@ -45,7 +44,11 @@ const MessageBox = forwardRef(
       });
 
       axios
-        .get(base_url + "/posts/reply/" + (post_id ? post_id : 0))
+        .get(
+          process.env.REACT_APP_BASE_URL +
+            "/posts/reply/" +
+            (post_id ? post_id : 0)
+        )
         .then((response) => {
           console.log(response.data);
           setThreads(response.data);
@@ -64,7 +67,7 @@ const MessageBox = forwardRef(
 
     const updatePost = () => {
       axios
-        .put(base_url + "/posts", {
+        .put(process.env.REACT_APP_BASE_URL + "/posts", {
           channel_id: nowChannel.id.toString(),
           user_id: user_id.toString(),
           text: fixText,
@@ -88,7 +91,7 @@ const MessageBox = forwardRef(
         return;
       }
       axios
-        .delete(base_url + "/posts/" + post_id, {
+        .delete(process.env.REACT_APP_BASE_URL + "/posts/" + post_id, {
           withCredentials: true,
         })
         .then((response) => {
@@ -116,7 +119,7 @@ const MessageBox = forwardRef(
               <h3>
                 {username}
                 <span className="message--headerSpecial">
-                  {created_at&&moment(created_at).fromNow()}
+                  {created_at && moment(created_at).fromNow()}
                 </span>
               </h3>
             </div>
