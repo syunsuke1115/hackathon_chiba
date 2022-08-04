@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"net/http"
 	"uttc-hackathon/driver"
 	"uttc-hackathon/models"
@@ -55,7 +56,7 @@ func main() {
 
 	// エラー回避
 	c := cors.New(cors.Options{
-        AllowedOrigins:[]string{"http://localhost:3000"},
+        AllowedOrigins:[]string{"https://hackathon-chiba-5mqo22iky-syunsuke1115.vercel.app"},
 		AllowedMethods:[]string{http.MethodHead,
 			http.MethodGet,
 			http.MethodPost,
@@ -66,7 +67,11 @@ func main() {
     handler := c.Handler(router)
 
 	fmt.Println("server run")
-	log.Fatal(http.ListenAndServe(":8000",handler))
+	port := os.Getenv("PORT")
+	if port == "" {
+			port = "8080"
+	}
+	log.Fatal(http.ListenAndServe(":"+port,handler))
 }
 
 func getPosts(w http.ResponseWriter,r *http.Request){

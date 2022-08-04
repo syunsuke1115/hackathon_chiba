@@ -5,7 +5,7 @@ import axios from "axios";
 import base_url from "../../URL";
 import SendIcon from "@mui/icons-material/Send";
 
-function Post({ nowChannel, loginUser}) {
+function Post({ nowChannel, loginUser, setPosts }) {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
 
@@ -22,6 +22,18 @@ function Post({ nowChannel, loginUser}) {
       })
       .then((response) => {
         console.log(response.data);
+        axios
+          .get(
+            base_url + "/posts/channel/" + (nowChannel.id ? nowChannel.id : 1)
+          )
+          .then((response) => {
+            console.log(response.data);
+            setPosts(response.data);
+          })
+          .catch((e) => {
+            console.log("通信に失敗しました");
+            console.log(e);
+          });
       })
       .catch((e) => {
         console.log(e);

@@ -39,7 +39,7 @@ function Timeline({
       {/* チャンネル名 */}
       <div className="timeline--header">
         <h2>{nowChannel.name}</h2>
-        <Post nowChannel={nowChannel} loginUser={loginUser} />
+        <Post nowChannel={nowChannel} loginUser={loginUser} setPosts={setPosts}/>
       </div>
       <FlipMove>
         {posts.map((post) => (
